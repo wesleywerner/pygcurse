@@ -1326,12 +1326,20 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
 
 
     def _propsetcursorx(self, value):
+        """
+        Set the cursor's x coordinate.
+        
+        value - The new x coordinate. A negative value can be used to specify 
+        the x coordinate in terms of its relative distance to the right border 
+        of the surface. No operation will be performed if value is greater than 
+        or equal to the width of the surface.
+        """
         x = int(value)
         if x >= self._width or x <= -self._width:
             return # no-op
 
         if x < 0:
-            x = self._width - x
+            x = self._width + x
 
         self._cursorx = x
 
@@ -1341,12 +1349,20 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
 
 
     def _propsetcursory(self, value):
+        """
+        Set the cursor's y coordinate.
+        
+        value - The new y coordinate. A negative value can be used to specify 
+        the y coordinate in terms of its relative distance to the bottom border 
+        of the surface. No operation will be performed if value is greater than 
+        or equal to the height of the surface.
+        """
         y = int(value)
         if y >= self._height or y <= -self._height:
             return # no-op
 
         if y < 0:
-            y = self._height - y
+            y = self._height + y
 
         self._cursory = y
 
