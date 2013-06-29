@@ -1694,8 +1694,8 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
     cellheight        = property(_propgetcellheight, None) # Set func will be in VER2
     cellsize          = property(_propgetcellsize, None) # Set func will be in VER2
     surface           = property(_propgetsurface, None)
-    backsurface       = property(_propgetbackgroundsurface, _propsetbackgroundsurface)
-    frontsurface      = property(_propgetforegroundsurface, _propsetforegroundsurface)
+    backgroundimage       = property(_propgetbackgroundsurface, _propsetbackgroundsurface)
+    foregroundimage      = property(_propgetforegroundsurface, _propsetforegroundsurface)
     tabsize           = property(_propgettabsize, _propsettabsize)
 
     left        = property(_propgetleft, None)
