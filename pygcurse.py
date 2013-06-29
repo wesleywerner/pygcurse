@@ -221,6 +221,9 @@ class PygcurseSurface(object):
         self._surfaceobj = pygame.Surface((self._pixelwidth, self._pixelheight))
         self._surfaceobj = self._surfaceobj.convert_alpha() # TODO - This is needed for erasing, but does this have a performance hit?
 
+        # start empty
+        self._backgroundimageobj = None
+        self._foregroundimageobj = None
 
     def input(self, prompt='', x=None, y=None, maxlength=None, fgcolor=None, bgcolor=None, promptfgcolor=None, promptbgcolor=None, whitelistchars=None, blacklistchars=None, callbackfn=None, fps=None):
         """
@@ -390,7 +393,15 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
 
         # automatically blit to "window surface" pygame.Surface object if it was set.
         if self._windowsurface is not None and self._autoblit:
+            if self._backgroundimageobj:
+                self._windowsurface.blit(
+                    self._backgroundimageobj,
+                    self._backgroundimageobj.get_rect())
             self._windowsurface.blit(self._surfaceobj, self._surfaceobj.get_rect())
+            if self._foregroundimageobj:
+                self._windowsurface.blit(
+                    self._foregroundimageobj,
+                    self._foregroundimageobj.get_rect())
             if self._autodisplayupdate:
                 pygame.display.update()
 
@@ -1515,6 +1526,16 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
             self.resize(newwidth, newheight)
 
 
+    def _propsetbackgroundsurface(self, value):
+        self._backgroundimageobj =  pygame.transform.scale(value,
+                        (self.pixelwidth, self.pixelheight))
+
+
+    def _propsetforegroundsurface(self, value):
+        self._foregroundimageobj = pygame.transform.scale(value,
+                        (self.pixelwidth, self.pixelheight))
+
+
     def _propgetpixelwidth(self):
         return self._width * self._cellwidth
 
@@ -1560,6 +1581,14 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
 
     def _propgetsurface(self):
         return self._surfaceobj
+
+
+    def _propgetbackgroundsurface(self):
+        return self._backgroundimageobj
+
+
+    def _propgetforegroundsurface(self):
+        return self._foregroundimageobj
 
 
     def _propgetleft(self):
@@ -1660,6 +1689,8 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
     cellheight        = property(_propgetcellheight, None) # Set func will be in VER2
     cellsize          = property(_propgetcellsize, None) # Set func will be in VER2
     surface           = property(_propgetsurface, None)
+    backsurface       = property(_propgetbackgroundsurface, _propsetbackgroundsurface)
+    frontsurface      = property(_propgetforegroundsurface, _propsetforegroundsurface)
     tabsize           = property(_propgettabsize, _propsettabsize)
 
     left        = property(_propgetleft, None)
