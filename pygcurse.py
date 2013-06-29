@@ -383,7 +383,12 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
                         continue # don't need to render anything if it is just a space character.
 
                     # render the character and draw it to the surface
-                    charsurf = self._font.render(self._screenchar[x][y], 1, cellfgcolor, cellbgcolor)
+                    # to get transparent fonts with alpha, we need to omit
+                    # the bgcolor parameter. Passing None does not help.
+                    if cellbgcolor == ERASECOLOR:
+                        charsurf = self._font.render(self._screenchar[x][y], 1, cellfgcolor)
+                    else:
+                        charsurf = self._font.render(self._screenchar[x][y], 1, cellfgcolor, cellbgcolor)
                     charrect = charsurf.get_rect()
                     charrect.centerx = self._cellwidth * x + int(self._cellwidth / 2)
                     charrect.bottom = self._cellheight * (y + 1) # TODO - not correct, this would put stuff like g, p, q higher than normal.
