@@ -1532,14 +1532,19 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
 
 
     def _propsetbackgroundsurface(self, value):
-        self._backgroundimageobj =  pygame.transform.scale(value,
-                        (self.pixelwidth, self.pixelheight))
+        if value:
+            self._backgroundimageobj = pygame.transform.scale(value,
+                                        (self.pixelwidth, self.pixelheight))
+        else:
+            self._backgroundimageobj = None
 
 
     def _propsetforegroundsurface(self, value):
-        self._foregroundimageobj = pygame.transform.scale(value,
-                        (self.pixelwidth, self.pixelheight))
-
+        if value:
+            self._foregroundimageobj = pygame.transform.scale(value,
+                                        (self.pixelwidth, self.pixelheight))
+        else:
+            self._foregroundimageobj = None
 
     def _propgetpixelwidth(self):
         return self._width * self._cellwidth
