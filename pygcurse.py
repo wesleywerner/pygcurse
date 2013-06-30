@@ -2280,7 +2280,10 @@ class PygcurseTextbox:
 
         # handle word wrapping
         if self.wrap:
-            text = textwrap.wrap(self.text, width=width)
+            lines = self.text.split('\n')
+            text = []
+            for line in lines:
+                text.extend(textwrap.wrap(line, width=width))
         else:
             text = spitintogroupsof(width, self.text) # TODO - slight bug where if a line ends with \n, it could show an additional character. (this is the behavior of textwrap.wrap())
 
